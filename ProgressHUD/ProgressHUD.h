@@ -12,15 +12,45 @@
 #import <UIKit/UIKit.h>
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+//#define sheme_white
+#define sheme_black
+//#define sheme_color
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 #define HUD_STATUS_FONT			[UIFont boldSystemFontOfSize:16]
-#define HUD_STATUS_COLOR		[UIColor blackColor]
 
-#define HUD_SPINNER_COLOR		[UIColor colorWithRed:185.0/255.0 green:220.0/255.0 blue:47.0/255.0 alpha:1.0]
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+#ifdef sheme_white
+#define HUD_STATUS_COLOR		[UIColor whiteColor]
+#define HUD_SPINNER_COLOR		[UIColor whiteColor]
+#define HUD_BACKGROUND_COLOR	[UIColor colorWithWhite:0 alpha:0.8]
+#define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"ProgressHUD.bundle/success-white.png"]
+#define HUD_IMAGE_ERROR			[UIImage imageNamed:@"ProgressHUD.bundle/error-white.png"]
+#endif
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+#ifdef sheme_black
+#define HUD_STATUS_COLOR		[UIColor whiteColor]
+#define HUD_SPINNER_COLOR		[UIColor whiteColor]
 #define HUD_BACKGROUND_COLOR	[UIColor colorWithWhite:0 alpha:0.1]
-#define HUD_WINDOW_COLOR		[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]
+#define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"ProgressHUD.bundle/success-black.png"]
+#define HUD_IMAGE_ERROR			[UIImage imageNamed:@"ProgressHUD.bundle/error-black.png"]
+#endif
 
-#define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"ProgressHUD.bundle/progresshud-success.png"]
-#define HUD_IMAGE_ERROR			[UIImage imageNamed:@"ProgressHUD.bundle/progresshud-error.png"]
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+#ifdef sheme_color
+#define HUD_STATUS_COLOR		[UIColor blackColor]
+#define HUD_SPINNER_COLOR		[UIColor blackColor]
+#define HUD_BACKGROUND_COLOR	[UIColor colorWithWhite:0 alpha:0.1]
+#define HUD_IMAGE_SUCCESS		[UIImage imageNamed:@"ProgressHUD.bundle/success-color.png"]
+#define HUD_IMAGE_ERROR			[UIImage imageNamed:@"ProgressHUD.bundle/error-color.png"]
+#endif
+
+
+
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 @interface ProgressHUD : UIView
@@ -29,6 +59,7 @@
 + (ProgressHUD *)shared;
 
 + (void)dismiss;
++ (BOOL)isShowing;
 
 + (void)show:(NSString *)status;
 + (void)show:(NSString *)status Interaction:(BOOL)Interaction;
