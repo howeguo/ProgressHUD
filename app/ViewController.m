@@ -43,7 +43,8 @@
 	[items addObject:@"Success with text"];
 	[items addObject:@"Success without text"];
 	[items addObject:@"Error with text"];
-	[items addObject:@"Error without text"];
+    [items addObject:@"Error without text"];
+    [items addObject:@"Tip"];
 }
 
 #pragma mark - Table view data source
@@ -122,8 +123,9 @@
 			case 3: [ProgressHUD show:@"Please wait. We need some more time to work out this situation."]; break;
 			case 4: [ProgressHUD showSuccess:@"That was great!"]; break;
 			case 5: [ProgressHUD showSuccess:nil]; break;
-			case 6: [ProgressHUD showError:@"Something went wrong."]; break;
-			case 7: [ProgressHUD showError:nil]; break;
+            case 6: [ProgressHUD showError:@"Something went wrong."]; break;
+            case 7: [ProgressHUD showError:nil]; break;
+            case 8: [ProgressHUD showTip:@"Tip"]; break;
 		}
 	}
 }

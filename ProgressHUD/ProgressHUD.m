@@ -101,6 +101,21 @@
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
++ (void)showTip:(NSString *)tip {
+    [self showTip:tip Interaction:YES];
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------
++ (void)showTip:(NSString *)tip Interaction:(BOOL)Interaction {
+    if (!tip || [tip length] == 0) {
+        return;
+    }
+    [self shared].interaction = Interaction;
+    [[self shared] hudMake:tip imgage:nil spin:NO hide:YES];
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 - (id)init
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
@@ -239,8 +254,14 @@
 - (void)hudSize
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
+    
+    BOOL hasImg = (image.image != nil);
+    BOOL hasSpin = spinner.isAnimating;
+    
 	CGRect labelRect = CGRectZero;
-	CGFloat hudWidth = 100, hudHeight = 100;
+	CGFloat hudWidth = 100, hudHeight = (hasImg || hasSpin ? 100 : 100 - 28);
+    
+    
 	//---------------------------------------------------------------------------------------------------------------------------------------------
 	if (label.text != nil)
 	{
@@ -249,10 +270,11 @@
 		labelRect = [label.text boundingRectWithSize:CGSizeMake(200, 300) options:options attributes:attributes context:NULL];
         
 		labelRect.origin.x = 12;
-		labelRect.origin.y = 66;
+		labelRect.origin.y = (hasImg || hasSpin ? 66 : 66 - 24 - 28);
         
-		hudWidth = labelRect.size.width + 24;
-		hudHeight = labelRect.size.height + 80;
+        
+        hudWidth = labelRect.size.width + 24;
+		hudHeight = labelRect.size.height + (hasImg || hasSpin ? 80 : 80 - 24 - 28);
         
 		if (hudWidth < 100)
 		{
@@ -267,9 +289,12 @@
 	hud.center = CGPointMake(screen.width/2, screen.height/2);
 	hud.bounds = CGRectMake(0, 0, hudWidth, hudHeight);
 	//---------------------------------------------------------------------------------------------------------------------------------------------
-	CGFloat imagex = hudWidth/2;
-	CGFloat imagey = (label.text == nil) ? hudHeight/2 : 36;
-	image.center = spinner.center = CGPointMake(imagex, imagey);
+    if (hasImg || hasSpin) {
+        CGFloat imagex = hudWidth/2;
+        CGFloat imagey = (label.text == nil) ? hudHeight/2 : 36;
+        image.center = spinner.center = CGPointMake(imagex, imagey);
+    }
+
 	//---------------------------------------------------------------------------------------------------------------------------------------------
 	label.frame = labelRect;
 }
