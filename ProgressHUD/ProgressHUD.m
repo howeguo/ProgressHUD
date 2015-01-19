@@ -121,11 +121,7 @@
 {
 	self = [super initWithFrame:[[UIScreen mainScreen] bounds]];
 	//---------------------------------------------------------------------------------------------------------------------------------------------
-	id<UIApplicationDelegate> delegate = [[UIApplication sharedApplication] delegate];
-	//---------------------------------------------------------------------------------------------------------------------------------------------
-	if ([delegate respondsToSelector:@selector(window)])
-		window = [delegate performSelector:@selector(window)];
-	else window = [[UIApplication sharedApplication] keyWindow];
+    window = [[[UIApplication sharedApplication] windows] lastObject];
 	//---------------------------------------------------------------------------------------------------------------------------------------------
 	background = nil; hud = nil; spinner = nil; image = nil; label = nil;
 	//---------------------------------------------------------------------------------------------------------------------------------------------

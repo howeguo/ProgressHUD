@@ -15,6 +15,8 @@
 		292BA6AD19E7F69E00D0F6C8 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 292BA6AB19E7F69E00D0F6C8 /* ViewController.xib */; };
 		292BA6B219E7F6A800D0F6C8 /* ProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 292BA6AF19E7F6A800D0F6C8 /* ProgressHUD.bundle */; };
 		292BA6B319E7F6A800D0F6C8 /* ProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 292BA6B119E7F6A800D0F6C8 /* ProgressHUD.m */; };
+		367A8F111A3AF1F900B58458 /* UIViewController+Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 367A8F0E1A3AF1F900B58458 /* UIViewController+Helper.m */; };
+		367A8F121A3AF1F900B58458 /* UIViewController+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 367A8F101A3AF1F900B58458 /* UIViewController+Utils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,10 @@
 		292BA6AF19E7F6A800D0F6C8 /* ProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ProgressHUD.bundle; sourceTree = "<group>"; };
 		292BA6B019E7F6A800D0F6C8 /* ProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProgressHUD.h; sourceTree = "<group>"; };
 		292BA6B119E7F6A800D0F6C8 /* ProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProgressHUD.m; sourceTree = "<group>"; };
+		367A8F0D1A3AF1F900B58458 /* UIViewController+Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Helper.h"; sourceTree = "<group>"; };
+		367A8F0E1A3AF1F900B58458 /* UIViewController+Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Helper.m"; sourceTree = "<group>"; };
+		367A8F0F1A3AF1F900B58458 /* UIViewController+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utils.h"; sourceTree = "<group>"; };
+		367A8F101A3AF1F900B58458 /* UIViewController+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utils.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +72,10 @@
 			children = (
 				292BA68719E7F62000D0F6C8 /* AppDelegate.h */,
 				292BA68819E7F62000D0F6C8 /* AppDelegate.m */,
+				367A8F0D1A3AF1F900B58458 /* UIViewController+Helper.h */,
+				367A8F0E1A3AF1F900B58458 /* UIViewController+Helper.m */,
+				367A8F0F1A3AF1F900B58458 /* UIViewController+Utils.h */,
+				367A8F101A3AF1F900B58458 /* UIViewController+Utils.m */,
 				292BA69019E7F62000D0F6C8 /* Images.xcassets */,
 				292BA69219E7F62000D0F6C8 /* LaunchScreen.xib */,
 				292BA68319E7F62000D0F6C8 /* Supporting Files */,
@@ -166,9 +176,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				367A8F111A3AF1F900B58458 /* UIViewController+Helper.m in Sources */,
 				292BA68919E7F62000D0F6C8 /* AppDelegate.m in Sources */,
 				292BA6AC19E7F69E00D0F6C8 /* ViewController.m in Sources */,
 				292BA6B319E7F6A800D0F6C8 /* ProgressHUD.m in Sources */,
+				367A8F121A3AF1F900B58458 /* UIViewController+Utils.m in Sources */,
 				292BA68619E7F62000D0F6C8 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

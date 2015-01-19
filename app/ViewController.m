@@ -12,6 +12,7 @@
 #import "ProgressHUD.h"
 
 #import "ViewController.h"
+#import "UIViewController+Helper.h"
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 @interface ViewController()
@@ -117,7 +118,7 @@
 	{
 		switch (indexPath.row)
 		{
-			case 0: [ProgressHUD dismiss]; break;
+			case 0: [self stopLoading]; break;
 			case 1: [ProgressHUD show:nil]; break;
 			case 2: [ProgressHUD show:@"Please wait..."]; break;
 			case 3: [ProgressHUD show:@"Please wait. We need some more time to work out this situation."]; break;
@@ -125,7 +126,7 @@
 			case 5: [ProgressHUD showSuccess:nil]; break;
             case 6: [ProgressHUD showError:@"Something went wrong."]; break;
             case 7: [ProgressHUD showError:nil]; break;
-            case 8: [ProgressHUD showTip:@"Tip"]; break;
+            case 8: [self showTip:@"Tip"]; break;
 		}
 	}
 }
