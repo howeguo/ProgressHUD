@@ -119,13 +119,13 @@
 		switch (indexPath.row)
 		{
 			case 0: [self stopLoading]; break;
-			case 1: [ProgressHUD show:nil]; break;
-			case 2: [ProgressHUD show:@"Please wait..."]; break;
-			case 3: [ProgressHUD show:@"Please wait. We need some more time to work out this situation."]; break;
-			case 4: [ProgressHUD showSuccess:@"That was great!"]; break;
-			case 5: [ProgressHUD showSuccess:nil]; break;
-            case 6: [ProgressHUD showError:@"Something went wrong."]; break;
-            case 7: [ProgressHUD showError:nil]; break;
+			case 1: [self startLoading]; break;
+			case 2: [self startLoadingWithStatus:@"Please wait..."]; break;
+			case 3: [self startLoadingWithStatus:@"Please wait. We need some more time to work out this situation."]; break;
+			case 4: [self showSuccessWithStatus:@"That was great!"]; break;
+			case 5: [self showSuccessWithStatus:nil]; break;
+            case 6: [self showErrorWithStatus:@"Something went wrong."]; break;
+            case 7: [self showErrorWithStatus:nil]; break;
             case 8: [self showTip:@"Tip"]; break;
 		}
 	}

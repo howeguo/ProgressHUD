@@ -11,26 +11,19 @@
 @interface UIViewController (Helper)
 
 
-- (IBAction)dismissSelf;
-- (IBAction)dismissSelfWithNoAnimated;
-- (IBAction)dismissSelfAnimated:(BOOL)animated completion:(void (^)(void))completion;
-
-
-
+#pragma mark - show
 - (void)startLoading;
 - (void)startLoadingWithInteractionEnable:(BOOL)interaction;
 - (void)startLoadingWithStatus:(NSString *)text;
+- (void)startLoadingWithStatus:(NSString *)text interactionEnable:(BOOL)interaction;
 
+#pragma mark - hide
 - (void)stopLoading;
+- (void)stopLoadingIfShowingInSelf;
 
+#pragma mark - show then hide
 - (void)showErrorWithStatus:(NSString *)text;
 - (void)showSuccessWithStatus:(NSString *)text;
-- (void)showStatus:(NSString *)text;
 - (void)showTip:(NSString *)tip;
 
-- (BOOL)loadingViewIsShowing;
-
-//==========
-
-- (void)handelEventError:(id)error;
 @end

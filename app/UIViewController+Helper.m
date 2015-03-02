@@ -14,103 +14,95 @@
 
 #import <objc/runtime.h>
 
-static char LoadingViewIsShowing;
+static char CurrentShowingViewController;
 
 @implementation UIViewController (Helper)
 
-#pragma mark - loadingViewIsShowing
-- (void)setLoadingViewIsShowing:(BOOL)loadingViewIsShowing {
-    [self willChangeValueForKey:@"loadingViewIsShowing"];
-    objc_setAssociatedObject(self, &LoadingViewIsShowing,
-                             [NSNumber numberWithBool:loadingViewIsShowing],
-                             OBJC_ASSOCIATION_RETAIN);
-    [self didChangeValueForKey:@"loadingViewIsShowing"];
+#pragma mark - CurrentShowingViewController
+- (void)setCurrentShowingViewController:(UIViewController *)vc
+{
+    [self willChangeValueForKey:@"currentShowingViewController"];
+    objc_setAssociatedObject(self, &CurrentShowingViewController,
+                             vc,
+                             OBJC_ASSOCIATION_ASSIGN);
+    [self didChangeValueForKey:@"currentShowingViewController"];
 }
 
-- (BOOL)loadingViewIsShowing {
-    return [objc_getAssociatedObject(self, &LoadingViewIsShowing) boolValue];
-}
-
-
-#pragma mark - Dismiss Self
-- (IBAction)dismissSelfAnimated:(BOOL)animated completion:(void (^)(void))completion {
-    [self.presentingViewController dismissViewControllerAnimated:animated
-                                                      completion:completion];
-}
-
-- (IBAction)dismissSelfAnimated:(BOOL)flag {
-    [self dismissSelfAnimated:flag completion:nil];
-}
-- (IBAction)dismissSelf {
-    [self dismissSelfAnimated:YES];
-}
-
-- (IBAction)dismissSelfWithNoAnimated {
-    [self dismissSelfAnimated:NO];
+- (UIViewController *)currentShowingViewController
+{
+    return objc_getAssociatedObject(self, &CurrentShowingViewController);
 }
 
 #pragma mark - Loading View -
 
 #pragma mark - show
-- (void)startLoading {
-    [self setLoadingViewIsShowing:YES];
-	[self startLoadingWithInteractionEnable:YES];
+- (void)startLoading
+{
+    [self setCurrentShowingViewController:self];
+    [self startLoadingWithInteractionEnable:YES];
 }
 
-- (void)startLoadingWithInteractionEnable:(BOOL)interaction {
-    [self setLoadingViewIsShowing:YES];
+- (void)startLoadingWithInteractionEnable:(BOOL)interaction
+{
+    [self setCurrentShowingViewController:self];
     [ProgressHUD show:nil Interaction:interaction];
 }
 
-- (void)showStatus:(NSString *)text {
-    [self setLoadingViewIsShowing:YES];
+- (void)showStatus:(NSString *)text
+{
+    [self setCurrentShowingViewController:self];
     [ProgressHUD show:text];
 }
 
-- (void)startLoadingWithStatus:(NSString *)text {
-    [self setLoadingViewIsShowing:YES];
+- (void)startLoadingWithStatus:(NSString *)text
+{
+    [self setCurrentShowingViewController:self];
     [ProgressHUD show:text];
+}
+
+- (void)startLoadingWithStatus:(NSString *)text interactionEnable:(BOOL)interaction
+{
+    [self setCurrentShowingViewController:self];
+    [ProgressHUD show:text Interaction:interaction];
 }
 
 #pragma mark - hide
-- (void)stopLoading {
-    if ([self loadingViewIsShowing]) {
-        [self setLoadingViewIsShowing:NO];
-        if ([ProgressHUD isShowing]) {
-            [ProgressHUD dismiss];
-        }
+
+- (void)hide
+{
+    [self setCurrentShowingViewController:nil];
+    if ([ProgressHUD isShowing]) {
+        [ProgressHUD dismiss];
+    }
+}
+- (void)stopLoading
+{
+    if ([self currentShowingViewController]) {
+        [self hide];
     }
 }
 
-#pragma mark - show the hide
-- (void)showErrorWithStatus:(NSString *)text {
-	[ProgressHUD showError:text];
+- (void)stopLoadingIfShowingInSelf
+{
+    if ([self currentShowingViewController] == self) {
+        [self hide];
+    }
 }
 
-- (void)showSuccessWithStatus:(NSString *)text {
-	[ProgressHUD showSuccess:text];
+#pragma mark - show then hide
+- (void)showErrorWithStatus:(NSString *)text
+{
+    [ProgressHUD showError:text];
 }
 
+- (void)showSuccessWithStatus:(NSString *)text
+{
+    [ProgressHUD showSuccess:text];
+}
 
-- (void)showTip:(NSString *)tip {
+- (void)showTip:(NSString *)tip
+{
     [ProgressHUD showTip:tip];
-}
-
-#pragma mark - handle error
-- (void)handelEventError:(id)error {
-    UIViewController *currentVC = [[self class] currentViewController];
-    if (self == currentVC) {
-        NSString *errmsg = nil;
-        if ([error isKindOfClass:[NSDictionary class]]) {
-            errmsg = [error objectForKey:@"errmsg"];
-        } else if ([error isKindOfClass:[NSError class]]) {
-            errmsg = [(NSError *)error localizedDescription];
-        } else {
-            error = @"发生未知错误";
-        }
-        
-        errmsg ? [self showErrorWithStatus:errmsg] : nil;
-    }
 }
 
 
