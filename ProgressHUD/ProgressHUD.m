@@ -23,7 +23,7 @@
 
 @implementation ProgressHUD
 
-@synthesize interaction, window, background, hud, spinner, image, label;
+@synthesize interaction, window, background, hud, spinner, image, label,gifView,gifLoading,animationImages;
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 + (ProgressHUD *)shared
@@ -123,7 +123,7 @@
     //---------------------------------------------------------------------------------------------------------------------------------------------
     window = [[[UIApplication sharedApplication] windows] lastObject];
     //---------------------------------------------------------------------------------------------------------------------------------------------
-    background = nil; hud = nil; spinner = nil; image = nil; label = nil;
+    background = nil; hud = nil; spinner = nil; image = nil; label = nil,gifView = nil;
     //---------------------------------------------------------------------------------------------------------------------------------------------
     self.alpha = 0;
     //---------------------------------------------------------------------------------------------------------------------------------------------
@@ -142,7 +142,7 @@
     image.image = img;
     image.hidden = (img == nil) ? YES : NO;
     //---------------------------------------------------------------------------------------------------------------------------------------------
-    if (spin) [spinner startAnimating]; else [spinner stopAnimating];
+    if (spin) gifLoading ? [gifView startAnimating] : [spinner startAnimating]; else gifLoading ? [gifView stopAnimating] :[spinner stopAnimating];
     //---------------------------------------------------------------------------------------------------------------------------------------------
     [self hudOrient];
     [self hudSize];
@@ -182,13 +182,25 @@
         else [window addSubview:hud];
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
-    if (spinner == nil)
-    {
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-        spinner.color = HUD_SPINNER_COLOR;
-        spinner.hidesWhenStopped = YES;
+    
+    if (!gifLoading) {
+        if (spinner == nil)
+        {
+            spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+            spinner.color = HUD_SPINNER_COLOR;
+            spinner.hidesWhenStopped = YES;
+        }
+        if (spinner.superview == nil) [hud addSubview:spinner];
+    }else{
+        if (gifView == nil)
+        {
+            gifView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 60.0, 60.0)];
+            gifView.animationDuration = 2.0;
+            gifView.animationRepeatCount = 0;
+            gifView.animationImages = animationImages;
+        }
+        if (gifView.superview == nil) [hud addSubview:gifView];
     }
-    if (spinner.superview == nil) [hud addSubview:spinner];
     //---------------------------------------------------------------------------------------------------------------------------------------------
     if (image == nil)
     {
@@ -219,6 +231,7 @@
     [label removeFromSuperview];		label = nil;
     [image removeFromSuperview];		image = nil;
     [spinner removeFromSuperview];		spinner = nil;
+    [gifView removeFromSuperview];		gifView = nil;
     [hud removeFromSuperview];			hud = nil;
     [background removeFromSuperview];	background = nil;
 }
@@ -252,7 +265,7 @@
 {
     
     BOOL hasImg = (image.image != nil);
-    BOOL hasSpin = spinner.isAnimating;
+    BOOL hasSpin = gifLoading ? gifView.isAnimating : spinner.isAnimating;
     
     CGRect labelRect = CGRectZero;
     CGFloat hudWidth = 100, hudHeight = (hasImg || hasSpin ? 100 : 100 - 28);
@@ -288,7 +301,7 @@
     if (hasImg || hasSpin) {
         CGFloat imagex = hudWidth/2;
         CGFloat imagey = (label.text == nil) ? hudHeight/2 : 36;
-        image.center = spinner.center = CGPointMake(imagex, imagey);
+        image.center = spinner.center = gifView.center =  CGPointMake(imagex, imagey);
     }
     
     //---------------------------------------------------------------------------------------------------------------------------------------------

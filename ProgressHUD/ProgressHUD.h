@@ -74,12 +74,14 @@
 + (void)showTip:(NSString *)tip Interaction:(BOOL)Interaction;
 
 @property (nonatomic, assign) BOOL interaction;
+@property (nonatomic, assign) BOOL gifLoading;
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UIView *background;
 @property (nonatomic, retain) UIToolbar *hud;
 @property (nonatomic, retain) UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) UIImageView *image;
 @property (nonatomic, retain) UILabel *label;
-
+@property (nonatomic, retain) UIImageView *image;
+@property (nonatomic, retain) UIImageView *gifView;
+@property (nonatomic, retain) NSArray *animationImages;
 @end
