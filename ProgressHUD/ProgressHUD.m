@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 
 #import "ProgressHUD.h"
-
+static NSMutableArray *gifImages;
 @implementation ProgressHUD
 
 @synthesize interaction, window, background, hud, spinner, image, label,gifView,gifLoading,animationImages;
@@ -201,12 +201,16 @@
             gifView.animationRepeatCount = 0;
             
             if (!animationImages) {
-                animationImages = [NSMutableArray array];
-                for (int i = 1; i < 110; i++) {
-                    NSString *imgName = [NSString stringWithFormat:@"ProgressHUD.bundle/loading/ball_%d.png",i];
-                    UIImage *ballImage = [UIImage imageNamed:imgName];
-                    [animationImages addObject:ballImage];
+                if (!gifImages) {
+                    gifImages = [NSMutableArray array];
+                    for (int i = 1; i < 110; i++) {
+                        NSString *imgName = [NSString stringWithFormat:@"ProgressHUD.bundle/loading/ball_%d.png",i];
+                        UIImage *ballImage = [UIImage imageNamed:imgName];
+                        [gifImages addObject:ballImage];
+                    }
                 }
+                animationImages = [NSMutableArray arrayWithArray:gifImages];
+                
             }
             gifView.animationImages = animationImages;
             
