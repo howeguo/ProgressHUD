@@ -83,5 +83,5 @@
 @property (nonatomic, retain) UILabel *label;
 @property (nonatomic, retain) UIImageView *image;
 @property (nonatomic, retain) UIImageView *gifView;
-@property (nonatomic, retain) NSArray *animationImages;
+@property (nonatomic, retain) NSMutableArray *animationImages;
 @end

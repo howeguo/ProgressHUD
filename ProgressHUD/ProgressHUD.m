@@ -182,7 +182,8 @@
         else [window addSubview:hud];
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
-    
+
+
     if (!gifLoading) {
         if (spinner == nil)
         {
@@ -190,6 +191,7 @@
             spinner.color = HUD_SPINNER_COLOR;
             spinner.hidesWhenStopped = YES;
         }
+        
         if (spinner.superview == nil) [hud addSubview:spinner];
     }else{
         if (gifView == nil)
@@ -197,10 +199,24 @@
             gifView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 60.0, 60.0)];
             gifView.animationDuration = 2.0;
             gifView.animationRepeatCount = 0;
+            
+            if (!animationImages) {
+                animationImages = [NSMutableArray array];
+                for (int i = 1; i < 110; i++) {
+                    NSString *imgName = [NSString stringWithFormat:@"ball_%d.png",i];
+                    UIImage *ballImage = [UIImage imageNamed:imgName];
+                    [animationImages addObject:ballImage];
+                }
+            }
             gifView.animationImages = animationImages;
+            
         }
         if (gifView.superview == nil) [hud addSubview:gifView];
     }
+    
+    spinner.hidden = gifLoading;
+    gifView.hidden = !gifLoading;
+    
     //---------------------------------------------------------------------------------------------------------------------------------------------
     if (image == nil)
     {

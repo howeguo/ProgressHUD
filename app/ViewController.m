@@ -120,13 +120,6 @@
 			case 1: [ProgressHUD show:nil]; break;
             case 2: {
                 [ProgressHUD shared].gifLoading = YES;
-                NSMutableArray *images = [NSMutableArray array];
-                    for (int i = 1; i < 110; i++) {
-                        NSString *imgName = [NSString stringWithFormat:@"loadding_%d.png",i];
-                        UIImage *image = [UIImage imageNamed:imgName];
-                        [images addObject:image];
-                    }
-                [ProgressHUD shared].animationImages = images;
  
             [ProgressHUD show:@"Please wait..."];
             } break;
