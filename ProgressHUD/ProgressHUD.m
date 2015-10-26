@@ -325,7 +325,10 @@
 		NSTimeInterval sleep = length * 0.04 + 0.5;
 		
 		[NSThread sleepForTimeInterval:sleep];
-		[self hudHide];
+        //回到主线程更新UI 2015-10-26 Howe Kuo修改
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hudHide];
+        });
 	}
 }
 
