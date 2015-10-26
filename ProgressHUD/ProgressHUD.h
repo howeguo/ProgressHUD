@@ -78,5 +78,4 @@
 @property (nonatomic, retain) UIActivityIndicatorView *spinner;
 @property (nonatomic, retain) UIImageView *image;
 @property (nonatomic, retain) UILabel *label;
-
 @end
