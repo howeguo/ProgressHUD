@@ -70,6 +70,9 @@
 + (void)showError:(NSString *)status;
 + (void)showError:(NSString *)status Interaction:(BOOL)Interaction;
 
++ (void)showTip:(NSString *)tip;
++ (void)showTip:(NSString *)tip Interaction:(BOOL)Interaction;
+
 @property (nonatomic, assign) BOOL interaction;
 
 @property (nonatomic, retain) UIWindow *window;
