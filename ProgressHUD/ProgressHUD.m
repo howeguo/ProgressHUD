@@ -203,7 +203,7 @@
             if (!animationImages) {
                 animationImages = [NSMutableArray array];
                 for (int i = 1; i < 110; i++) {
-                    NSString *imgName = [NSString stringWithFormat:@"ball_%d.png",i];
+                    NSString *imgName = [NSString stringWithFormat:@"ProgressHUD.bundle/loading/ball_%d.png",i];
                     UIImage *ballImage = [UIImage imageNamed:imgName];
                     [animationImages addObject:ballImage];
                 }
