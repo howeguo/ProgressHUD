@@ -201,19 +201,19 @@ static NSMutableArray *gifImages;
             gifView.animationRepeatCount = 0;
             
             if (!animationImages) {
-                if (!gifImages) {
-                    gifImages = [NSMutableArray array];
-                    for (int i = 1; i < 110; i++) {
-                        NSString *imgName = [NSString stringWithFormat:@"ProgressHUD.bundle/loading/ball_%d.png",i];
-                        UIImage *ballImage = [UIImage imageNamed:imgName];
-                        [gifImages addObject:ballImage];
+                animationImages = [NSMutableArray array];
+                for (int i = 1; i < 110; i++) {
+                    NSString *imgName = [NSString stringWithFormat:@"ball_%d",i];
+                    NSString *bundlePath = [[NSBundle mainBundle].resourcePath stringByAppendingPathComponent:@"ProgressHUD.bundle"];
+                    NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+                    NSString *img_path = [bundle pathForResource:imgName ofType:@"png"];
+                    UIImage *ballImage = [UIImage imageWithContentsOfFile:img_path];
+                    if (ballImage) {
+                        [animationImages addObject:ballImage];
                     }
                 }
-                animationImages = [NSMutableArray arrayWithArray:gifImages];
-                
             }
             gifView.animationImages = animationImages;
-            
         }
         if (gifView.superview == nil) [hud addSubview:gifView];
     }
