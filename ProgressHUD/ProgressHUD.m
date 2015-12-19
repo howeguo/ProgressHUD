@@ -20,7 +20,7 @@
 // THE SOFTWARE.
 
 #import "ProgressHUD.h"
-static NSMutableArray *gifImages;
+
 @implementation ProgressHUD
 
 @synthesize interaction, window, background, hud, spinner, image, label,gifView,gifLoading,animationImages;
@@ -121,7 +121,12 @@ static NSMutableArray *gifImages;
 {
     self = [super initWithFrame:[[UIScreen mainScreen] bounds]];
     //---------------------------------------------------------------------------------------------------------------------------------------------
-    window = [[[UIApplication sharedApplication] windows] lastObject];
+    id<UIApplicationDelegate> delegate = [[UIApplication sharedApplication] delegate];
+    //---------------------------------------------------------------------------------------------------------------------------------------------
+    if ([delegate respondsToSelector:@selector(window)])
+        window = [delegate performSelector:@selector(window)];
+    else window = [[UIApplication sharedApplication] keyWindow];
+    
     //---------------------------------------------------------------------------------------------------------------------------------------------
     background = nil; hud = nil; spinner = nil; image = nil; label = nil,gifView = nil;
     //---------------------------------------------------------------------------------------------------------------------------------------------
@@ -166,7 +171,7 @@ static NSMutableArray *gifImages;
         hud.layer.cornerRadius = 10;
         hud.layer.masksToBounds = YES;
         //-----------------------------------------------------------------------------------------------------------------------------------------
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        [self registerNotifications];
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     if (hud.superview == nil)
@@ -182,8 +187,8 @@ static NSMutableArray *gifImages;
         else [window addSubview:hud];
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
-
-
+    
+    
     if (!gifLoading) {
         if (spinner == nil)
         {
@@ -214,6 +219,7 @@ static NSMutableArray *gifImages;
                 }
             }
             gifView.animationImages = animationImages;
+            
         }
         if (gifView.superview == nil) [hud addSubview:gifView];
     }
@@ -243,10 +249,25 @@ static NSMutableArray *gifImages;
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)registerNotifications
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hudPosition:)
+                                                 name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hudPosition:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hudPosition:) name:UIKeyboardDidHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hudPosition:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hudPosition:) name:UIKeyboardDidShowNotification object:nil];
+    
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)hudDestroy
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     //---------------------------------------------------------------------------------------------------------------------------------------------
     [label removeFromSuperview];		label = nil;
     [image removeFromSuperview];		image = nil;
@@ -383,6 +404,66 @@ static NSMutableArray *gifImages;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hudHide];
         });    }
+}
+
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)hudPosition:(NSNotification *)notification
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+{
+    CGFloat heightKeyboard = 0;
+    NSTimeInterval duration = 0;
+    //---------------------------------------------------------------------------------------------------------------------------------------------
+    if (notification != nil)
+    {
+        NSDictionary *info = [notification userInfo];
+        CGRect keyboard = [[info valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        duration = [[info valueForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        if ((notification.name == UIKeyboardWillShowNotification) || (notification.name == UIKeyboardDidShowNotification))
+        {
+            heightKeyboard = keyboard.size.height;
+        }
+    }
+    else heightKeyboard = [self keyboardHeight];
+    //---------------------------------------------------------------------------------------------------------------------------------------------
+    CGRect screen = [UIScreen mainScreen].bounds;
+    CGPoint center = CGPointMake(screen.size.width/2, (screen.size.height-heightKeyboard)/2);
+    //---------------------------------------------------------------------------------------------------------------------------------------------
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+        hud.center = CGPointMake(center.x, center.y);
+    } completion:nil];
+    //---------------------------------------------------------------------------------------------------------------------------------------------
+    if (background != nil) background.frame = window.frame;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+- (CGFloat)keyboardHeight
+//-------------------------------------------------------------------------------------------------------------------------------------------------
+{
+    for (UIWindow *testWindow in [[UIApplication sharedApplication] windows])
+    {
+        if ([[testWindow class] isEqual:[UIWindow class]] == NO)
+        {
+            for (UIView *possibleKeyboard in [testWindow subviews])
+            {
+                if ([[possibleKeyboard description] hasPrefix:@"<UIPeripheralHostView"])
+                {
+                    return possibleKeyboard.bounds.size.height;
+                }
+                else if ([[possibleKeyboard description] hasPrefix:@"<UIInputSetContainerView"])
+                {
+                    for (UIView *hostKeyboard in [possibleKeyboard subviews])
+                    {
+                        if ([[hostKeyboard description] hasPrefix:@"<UIInputSetHost"])
+                        {
+                            return hostKeyboard.frame.size.height;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 @end
